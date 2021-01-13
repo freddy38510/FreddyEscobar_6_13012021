@@ -4,6 +4,7 @@ const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors');
 const httpStatus = require('http-status');
+const config = require('./config/config');
 const morgan = require('./config/morgan');
 const { authLimiter } = require('./middlewares/rateLimiter');
 const { errorHandler, errorConverter } = require('./middlewares/error');
@@ -30,6 +31,11 @@ app.use(mongoSanitize());
 // enable cors
 app.use(cors());
 app.options('*', cors());
+
+// limit repeated failed requests to auth endpoints
+if (config.env === 'production') {
+  app.use('/auth', authLimiter);
+}
 
 // send back a 404 error for any unknown api request
 app.use((_req, _res, next) => {
