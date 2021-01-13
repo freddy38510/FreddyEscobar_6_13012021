@@ -1,4 +1,8 @@
 const express = require('express');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const mongoSanitize = require('express-mongo-sanitize');
+const cors = require('cors');
 const morgan = require('./config/morgan');
 const { authLimiter } = require('./middlewares/rateLimiter');
 
@@ -6,4 +10,15 @@ const app = express();
 
 app.use(morgan.successHandler);
 app.use(morgan.errorHandler);
+
+// set security HTTP headers
+app.use(helmet());
+
+// sanitize request data
+app.use(xss());
+app.use(mongoSanitize());
+
+// enable cors
+app.use(cors());
+app.options('*', cors());
 module.exports = app;
