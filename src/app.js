@@ -14,6 +14,12 @@ app.use(morgan.errorHandler);
 // set security HTTP headers
 app.use(helmet());
 
+// parse json request body
+app.use(express.json());
+
+// parse urlencoded request body
+app.use(express.urlencoded({ extended: true }));
+
 // sanitize request data
 app.use(xss());
 app.use(mongoSanitize());
