@@ -7,6 +7,7 @@ const httpStatus = require('http-status');
 const config = require('./config/config');
 const morgan = require('./config/morgan');
 const { authLimiter } = require('./middlewares/rateLimiter');
+const routes = require('./routes');
 const { errorHandler, errorConverter } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
 
@@ -36,6 +37,9 @@ app.options('*', cors());
 if (config.env === 'production') {
   app.use('/auth', authLimiter);
 }
+
+// api routes
+app.use('/api', routes);
 
 // send back a 404 error for any unknown api request
 app.use((_req, _res, next) => {
