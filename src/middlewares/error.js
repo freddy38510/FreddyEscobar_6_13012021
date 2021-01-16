@@ -18,6 +18,10 @@ const errorConverter = (err, _req, _res, next) => {
     return next(new ApiError(httpStatus.BAD_REQUEST, err.message, true));
   }
 
+  if (err.message === 'Incorrect email or password') {
+    return next(new ApiError(httpStatus.UNAUTHORIZED, err.message, true));
+  }
+
   let error = err;
 
   const statusCode = error.statusCode || error instanceof mongoose.Error
