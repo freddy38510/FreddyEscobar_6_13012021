@@ -13,6 +13,8 @@ const ApiError = require('./utils/ApiError');
 
 const app = express();
 
+app.use('/images', express.static('uploads/images'));
+
 app.use(morgan.successHandler);
 app.use(morgan.errorHandler);
 
