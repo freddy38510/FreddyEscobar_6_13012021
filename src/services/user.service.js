@@ -32,8 +32,12 @@ const getUserByEmail = async (email) => User.findOne({ email });
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
-const updateUserById = async (userId, updateBody) => {
+const updateUserById = async (userId, updateBody, authUser) => {
   const user = await getUserById(userId).orFail();
+
+  if (user.id !== authUser.id) {
+    throw new Error('Unauthorized');
+  }
 
   Object.assign(user, updateBody);
 
@@ -47,8 +51,14 @@ const updateUserById = async (userId, updateBody) => {
  * @param {ObjectId} userId
  * @returns {Promise<User>}
  */
-const deleteUserById = async (userId) => {
-  const user = await User.findByIdAndDelete(userId).orFail();
+const deleteUserById = async (userId, authUser) => {
+  const user = await User.findById(userId).orFail();
+
+  if (user.id !== authUser.id) {
+    throw new Error('Unauthorized');
+  }
+
+  await user.remove();
 
   return user;
 };

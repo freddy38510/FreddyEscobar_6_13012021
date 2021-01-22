@@ -27,8 +27,12 @@ const getSauceById = async (id) => Sauce.findById(id).orFail();
  * @param {Object} updateBody
  * @returns {Promise<Sauce>}
  */
-const updateSauceById = async (sauceId, updateBody) => {
+const updateSauceById = async (sauceId, updateBody, authUser) => {
   const sauce = await Sauce.findById(sauceId).orFail();
+
+  if (sauce.userId !== authUser.id) {
+    throw new Error('Unauthorized');
+  }
 
   const { imageUrl } = sauce;
 

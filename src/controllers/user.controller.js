@@ -21,13 +21,13 @@ const getUser = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  await userService.updateUserById(req.params.userId, req.body);
+  await userService.updateUserById(req.params.userId, req.body, req.user);
 
   res.send({ message: 'User updated' });
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-  await userService.deleteUserById(req.params.userId);
+  await userService.deleteUserById(req.params.userId, req.user);
 
   res.send({ message: 'User deleted' });
 });

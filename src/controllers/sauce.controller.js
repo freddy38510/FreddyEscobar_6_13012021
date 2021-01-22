@@ -21,7 +21,7 @@ const getSauce = catchAsync(async (req, res) => {
 });
 
 const updateSauce = catchAsync(async (req, res) => {
-  await sauceService.updateSauceById(req.params.sauceId, req.body);
+  await sauceService.updateSauceById(req.params.sauceId, req.body, req.user);
 
   res.send({ message: 'Sauce updated' });
 });
