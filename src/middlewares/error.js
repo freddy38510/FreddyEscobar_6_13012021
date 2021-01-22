@@ -22,6 +22,10 @@ const errorConverter = (err, _req, _res, next) => {
     return next(new ApiError(httpStatus.UNAUTHORIZED, err.message, true));
   }
 
+  if (err.message === 'Unauthorized') {
+    return next(new ApiError(httpStatus.UNAUTHORIZED, err.message, false));
+  }
+
   let error = err;
 
   const statusCode = error.statusCode || error instanceof mongoose.Error

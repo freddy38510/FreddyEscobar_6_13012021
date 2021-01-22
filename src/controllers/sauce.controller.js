@@ -27,7 +27,7 @@ const updateSauce = catchAsync(async (req, res) => {
 });
 
 const deleteSauce = catchAsync(async (req, res) => {
-  await sauceService.deleteSauceById(req.params.sauceId);
+  await sauceService.deleteSauceById(req.params.sauceId, req.user);
 
   // frontend wants a 200 http code
   // res.status(httpStatus.NO_CONTENT).send();

@@ -48,8 +48,14 @@ const updateSauceById = async (sauceId, updateBody) => {
  * @param {ObjectId} sauceId
  * @returns {Promise<Sauce>}
  */
-const deleteSauceById = async (sauceId) => {
-  const sauce = await Sauce.findByIdAndDelete(sauceId).orFail();
+const deleteSauceById = async (sauceId, authUser) => {
+  const sauce = await Sauce.findById(sauceId).orFail();
+
+  if (sauce.userId !== authUser.id) {
+    throw new Error('Unauthorized');
+  }
+
+  await sauce.remove();
 
   deleteSauceImage(sauce.imageUrl);
 

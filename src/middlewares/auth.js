@@ -13,10 +13,10 @@ const auth = async (req, _res, next) => {
 
     const decodedToken = tokenService.verifyToken(token);
 
-    const { userId } = decodedToken;
+    req.user = { id: decodedToken.userId };
 
-    // check if authenticated user is resource owner when updating or deleting
-    if (req.body.userId && req.body.userId !== userId) {
+    // check if authenticated user is resource owner when updating
+    if (req.body.userId && req.body.userId !== req.user.id) {
       throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
     }
 
